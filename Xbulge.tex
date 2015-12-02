@@ -6,6 +6,17 @@
 \usepackage{color}
 \bibliographystyle{apj}
 
+\usepackage{hyperref}
+\newcommand{\niceurl}[1]{\href{#1}{\textsl{#1}}}
+
+
+% To-do:
+%  - do we get the same result with the official WISE coadds (vs unWISE)?
+%  - which legacysurvey.org URL to list?
+%  - Galactic L,B grid lines?
+%  - ensure that Figure 1 galactic L,B are labelled correctly!  Is the LMC in the right place?
+
+\newcommand{\viewerurl}{\niceurl{http://legacysurvey.org/viewer}}
 
 \begin{document}
 
@@ -37,7 +48,7 @@ D.~A.~Lang\altaffilmark{3,4}
 
 \begin{abstract}%
 The Milky Way bulge has a boxy/peanut morphology and an X-shape structure. This X-shape has been revealed by the `split in the red clump' from 
-star counts along the line of sight toward the bulge, measured from photometric surveys. An alternative scenario proposes that the bulge is not X-shaped and that the apparent split in the red clump is instead due to different stellar populations, in an old classical spheroidal bulge. We present the WISE image of the Milky Way bulge, \textcolor{blue}{obtained by coadds of the WISE images, that produce a resolution that is higher than the original WISE public data release. }The WISE image of the Milky Way bulge shows that the X-shaped nature of the Milky Way bulge is self-evident and irrefutable. This data used to create this image that we present is publicly available and can be readily accessed by the community for further analysis of the nature of the X-shaped bulge of the Milky Way. 
+star counts along the line of sight toward the bulge, measured from photometric surveys. An alternative scenario proposes that the bulge is not X-shaped and that the apparent split in the red clump is instead due to different stellar populations, in an old classical spheroidal bulge. We present a WISE image of the Milky Way bulge, produced by downsampling the publicly available ``unWISE'' coadds.  The WISE image of the Milky Way bulge shows that the X-shaped nature of the Milky Way bulge is self-evident and irrefutable. This data used to create this image that we present is publicly available and can be readily accessed by the community for further analysis of the nature of the X-shaped bulge of the Milky Way. 
 \end{abstract}
 %The X-shaped property the Milky Way's bulge has been recently questioned. An alternative scenario to the X-shaped morphology, to explain the split in the red clump stars in the inner Galaxy has been proposed that the bulge is not X-shaped and the apparent
 
@@ -61,16 +72,21 @@ The split in the red clump stars in the Galactic bulge was first detected from p
 
 \textcolor{blue}{\textbf{For the following sections in blue text: Is all of this right - have we said enough?} }
 
-\textcolor{blue}{The Wide-Field Infrared Survey Explorer (WISE, \citet{W2010}) is a full sky photometric survey using four bands in the mid-infrared at 3.4 $\micron$, 4.6 $\micron$, 12 $\micron$ and 22 $\micron$ (W1--W4). The original WISE data release was based on a co-adding approach that is optimal for detecting isolated point sources but which effectively blurs the images. \citet{Lang2014b} implemented an alternative co-adding methodology, by capitalising on the 400 million WISE sources that were also measured by the Sloan Digital Sky Survey (SDSS, \citet{York2000}). The so called forced photometry approach implemented by \citet{Lang2014a} preserves the intrinsic resolution of the data by calibrating the WISE images at the location of all SDSS sources. This takes advantage of the resolution and depth of SDSS, in the processing of the WISE data. These improved, higher resolution WISE coadds, for all 400 million SDSS sources, plus the code used to produce them are detailed in \citet{Lang2014b}} \footnote{and available at http$://$unwise.me}.
+The Wide-Field Infrared Survey Explorer (WISE, \citet{W2010}) is a full sky photometric survey using four bands in the mid-infrared at 3.4 $\micron$, 4.6 $\micron$, 12 $\micron$ and 22 $\micron$ (W1--W4).
+The original WISE data release was based on a co-adding approach that is optimal for detecting isolated point sources but which effectively blurs the images. \citet{Lang2014b} implemented an alternative co-adding methodology that does not degrade the resolution of the imaging.  These ``unWISE'' coadds have been publicly released\footnote{available at \niceurl{http://unwise.me}}.
 
-\textcolor{blue}{Figure \ref{fig:xbulge} presents the WISE image from \citet{Lang2014a} \footnote{available in interactive ra,dec coordinates at http$://$imagine.legacysurvey.org} of the bulge region of the Milky Way, $(l,b)$ $<$ (180, 50). This image has been made using wise bands W1 and W2. This presents the overall Milky Way structures in exquisite detail, at the intrinsic resolution of WISE; no additional unsharp masking or equivalent techniques have been used to enhance these data. The bulge in the central region of this Figure shows a clear X-shaped morphology. Note that the arms of the X-shape are asymmetrical around the minor axis and appear larger at left than at right. This is a real projection effect and reflects that the bulge is oriented at about 27$^\circ$ degrees with respect to the line of sight \citep{Wegg2013}, with the nearest side at positive longitudes.}
+
+Figure \ref{fig:xbulge} presents the WISE image from \citet{Lang2014a} \footnote{available in interactive ra,dec coordinates at \viewerurl} of the bulge region of the Milky Way, $(l,b)$ $<$ (180, 50), resampled to galactic coordinates.  This image shows WISE bands W1 and W2. This presents the overall Milky Way structures in exquisite detail.
+No additional unsharp masking or equivalent techniques have been used to enhance these data. The bulge in the central region of this Figure shows a clear X-shaped morphology. Note that the arms of the X-shape are asymmetrical around the minor axis and appear larger at left than at right. This is a real projection effect and reflects that the bulge is oriented at about 27$^\circ$ degrees with respect to the line of sight \citep{Wegg2013}, with the nearest side at positive longitudes.
 
 %Clear features like the small and large magellanic clouds are visible at $(l,b)$ $\approx$ $()$ and the in-plane dust 
 
 \begin{figure}[h!]
 \centering
-        \includegraphics[scale=0.45]{dustinlang_bulge.png}
-\caption{WISE image for W1 and W2 and put link to webpage where this is: http://imagine.legacysurvey.org which band is this? }
+        \includegraphics[width=\textwidth]{xbulge-00}
+\caption{WISE image for W1 and W2 in Galactic coordinates.  An arcsinh
+  stretch is used to allow the full dynamic range to be shown.}
+% and put link to webpage where this is: \viewerurl}
 \label{fig:xbulge}
 \end{figure}
 
@@ -80,8 +96,8 @@ The split in the red clump stars in the Galactic bulge was first detected from p
 
 \begin{figure}[h!]
 \centering
-        \includegraphics[scale=0.6]{2.png}
-\caption{Same as Figure 1 but zoomed in and subtraction of median in each row \textcolor{blue}{\bf{can we put the $l$ and $b$ on the x and y axes and overlay a galactic coordinate grid or else ra and dec grid?}}}
+        \includegraphics[width=\textwidth]{xbulge-01}
+\caption{Same as Figure 1 but zoomed in and with the median of each row of the image subtracted.}
 \label{fig:filt}
 \end{figure}
 
