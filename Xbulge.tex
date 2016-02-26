@@ -29,8 +29,9 @@
 %  - redo the unWISE coadds using the same code as the AllWISE ones
 %  - redo the unWISE coadds using Aaron's new ones?
 %  - cite AllWISE release (search ``official'')
-
-
+%  -- check the exponential disk fit -- emcee?
+%  ---- positivity?
+%  ---- stretch on residuals?
 
 \newcommand{\viewerurl}{\niceurl{http://legacysurvey.org/viewer}}
 
@@ -121,16 +122,22 @@ The projection effect is again clear in these residual maps, which reflects that
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=0.3\textwidth]{xbulge-04}
-\includegraphics[width=0.3\textwidth]{xbulge-08}
-\includegraphics[width=0.3\textwidth]{xbulge-09}
+\includegraphics[width=0.3\textwidth]{xbulge-fit-data}
+\includegraphics[width=0.3\textwidth]{xbulge-fit-masked}
+\includegraphics[width=0.3\textwidth]{xbulge-fit-model}
 \\
-\rule{0.3\textwidth}{0pt}
-\includegraphics[width=0.3\textwidth]{xbulge-10}
-\includegraphics[width=0.3\textwidth]{xbulge-12}
-\caption{The WISE W1 image fit by a simple exponential disk model, masking
-  out the core of the Galactic plane.  In the residuals, the X
-  structure becomes more apparent, and is clear in the masking outliers by colour done in the bottom right panel.}
+\includegraphics[width=0.3\textwidth]{xbulge-fit-resid}
+\includegraphics[width=0.3\textwidth]{xbulge-fit-residmasked}
+\includegraphics[width=0.3\textwidth]{xbulge-fit-smooth2}
+\caption{%
+  The WISE W1 and W2 image fit by a simple exponential disk
+  model, making the X structure more apparent.
+  Top-left: Data.  Top-middle: Data, masking out the top and bottom 5\%
+  of pixels based on W1-W2 color.  Top-right: Exponential disk model fit.
+  Bottom-left: Residuals (data minus model).  Bottom-middle: Masked residuals.
+  Bottom-right: 50-pixel median filter of masked residuals (median of unmasked
+  pixels).
+  }
 \label{fig:modfit}
 \end{figure}
 
