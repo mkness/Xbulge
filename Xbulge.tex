@@ -11,11 +11,8 @@
 
 
 % To-do:
-%  - do we get the same result with the official WISE coadds (vs unWISE)?
 %  -> viewer in L,B ?
-%  - Galactic L,B grid lines?
-%  - ensure that Figure 1 galactic L,B are labelled correctly!  Is the LMC in the right place?
-% - say something about W3, W4 -- trace dust, not stars; X not seen
+% - say something about W3/W4? -- trace dust, not stars; X not seen
 
 % @melissakness:
 % -- are the |\ell|s ok?
@@ -27,11 +24,9 @@
 %  - clean up, fully document, and add comments pointing to the 
 %    figure-generating code
 %  - redo the unWISE coadds using the same code as the AllWISE ones
-%  - redo the unWISE coadds using Aaron's new ones?
-%  - cite AllWISE release (search ``official'')
+%  - redo the unWISE coadds using Aaron's new ones
 %  -- check the exponential disk fit -- emcee?
 %  ---- positivity?
-%  ---- stretch on residuals?
 
 \newcommand{\viewerurl}{\niceurl{http://legacysurvey.org/viewer}}
 
@@ -109,7 +104,9 @@ families \citep[e.g.][]{Portail2015b}.
 The Wide-Field Infrared Survey Explorer \citep[WISE;][]{W2010} is a full sky photometric survey using four bands in the mid-infrared at 3.4 $\micron$, 4.6 $\micron$, 12 $\micron$ and 22 $\micron$ (W1--W4). The original WISE data release was based on a co-adding approach that is optimal for detecting isolated point sources but which effectively blurs the images. \citet{Lang2014a} implemented an alternative co-adding methodology that does not degrade the resolution of the imaging.  These ``unWISE'' coadds have been publicly released.\footnote{Available at \niceurl{http://unwise.me}. Browseable at \viewerurl.}
 
 Figure \ref{fig:xbulge} presents the bulge region of the Milky Way,  resampled to galactic coordinates from the unWISE images, across $(|\ell|,|b|)$ $<$ (60, 30) in WISE bands W1 and W2.  This presents the overall Milky Way structures in exquisite detail.
-No additional unsharp masking or equivalent techniques have been used to enhance these data. The bulge in the central region of this Figure shows a clear X-shaped morphology. Note that the arms of the X-shape are asymmetrical around the minor axis and appear larger at left than at right. This is a real projection effect and reflects that the bulge is oriented at about 27$^\circ$ degrees with respect to the line of sight \citep{Wegg2013}, with the nearest side at positive longitudes. The X-shape is also visible, though with more artifacts, in the official AllWISE data release imaging.
+No additional unsharp masking or equivalent techniques have been used to enhance these data. The bulge in the central region of this Figure shows a clear X-shaped morphology. Note that the arms of the X-shape are asymmetrical around the minor axis and appear larger at left than at right. This is a real projection effect and reflects that the bulge is oriented at about 27$^\circ$ degrees with respect to the line of sight \citep{Wegg2013}, with the nearest side at positive longitudes. The X-shape is also visible, though with more artifacts, in the official AllWISE data release imaging.\footnote{Explanatory
+  Supplement to the AllWISE Data Release Products, 
+  \niceurl{http://wise2.ipac.caltech.edu/docs/release/allwise/expsup/}}
 
 %Using the W3 and W4 images from the AllWISE data, it is difficult to see the X-shape structure due to variation in the background levels. 
 
