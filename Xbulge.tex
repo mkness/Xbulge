@@ -1,6 +1,5 @@
 \documentclass[12pt, preprint]{aastex}
 
-% words
 \newcommand{\project}[1]{\textsl{#1}}
 \newcommand{\documentname}{\textsl{Article}}
 \usepackage{color}
@@ -8,26 +7,6 @@
 
 \usepackage{hyperref}
 \newcommand{\niceurl}[1]{\href{#1}{\textsl{#1}}}
-
-
-% To-do:
-%  -> viewer in L,B ?
-% - say something about W3/W4? -- trace dust, not stars; X not seen
-
-% @melissakness:
-% -- are the |\ell|s ok?
-% -- is it worth saying what the exponential disk model fit parameters are
-%    in physical units?
-
-% @dstndstn:
-%  - Makefile
-%  - clean up, fully document, and add comments pointing to the 
-%    figure-generating code
-%  - redo the unWISE coadds using the same code as the AllWISE ones
-%  - redo the unWISE coadds using Aaron's new ones
-%  -- check the exponential disk fit -- emcee?
-%  ---- positivity?
-
 \newcommand{\viewerurl}{\niceurl{http://legacysurvey.org/viewer}}
 
 \begin{document}
@@ -57,7 +36,6 @@ Dustin Lang\altaffilmark{3,4}
   University of Waterloo,
   200 University Avenue West, Waterloo, ON, N2L 3G1, Canada
 }
-% the X-shaped morphology is believed to be tied to % generic formation history of nearby spiral galaxies 
 \begin{abstract}%
 The Milky Way bulge has a boxy/peanut morphology and an X-shaped structure. This X-shape has been revealed by the `split in the red clump' from 
 star counts along the line of sight toward the bulge, measured from photometric surveys. This boxy, X-shaped bulge morphology is not unique to the Milky Way and such bulges are observed in other barred spiral galaxies.  N-body simulations show that boxy and X-shaped bulges are formed from the disk via dynamical instabilities.  It has also been proposed that the Milky Way bulge is not X-shaped, but rather, the apparent split in the red clump stars is a consequence of different stellar populations, in an old classical spheroidal bulge. We present a WISE image of the Milky Way bulge, produced by downsampling the publicly available ``unWISE'' coadds. The WISE image of the Milky Way bulge shows that the X-shaped nature of the Milky Way bulge is self-evident and irrefutable. The X-shape morphology of the bulge in itself and the fraction of bulge stars that comprise orbits within this structure has important implications for the formation history of the Milky Way, and, given the ubiquity of boxy X-shaped bulges, spiral galaxies in general. 
@@ -66,6 +44,7 @@ star counts along the line of sight toward the bulge, measured from photometric 
 
 
 \keywords{%
+Galaxy: bulge; Galaxy: structure
 }
 
 \section{Introduction}\label{sec:Intro}
@@ -107,15 +86,15 @@ Figure \ref{fig:xbulge} presents the bulge region of the Milky Way,  resampled t
 No additional unsharp masking or equivalent techniques have been used to enhance these data. The bulge in the central region of this Figure shows a clear X-shaped morphology. Note that the arms of the X-shape are asymmetrical around the minor axis and appear larger at left than at right. This is a real projection effect and reflects that the bulge is oriented at about 27$^\circ$ degrees with respect to the line of sight \citep{Wegg2013}, with the nearest side at positive longitudes. The X-shape is also visible, though with more artifacts, in the official AllWISE data release imaging.\footnote{Explanatory
   Supplement to the AllWISE Data Release Products, 
   \niceurl{http://wise2.ipac.caltech.edu/docs/release/allwise/expsup/}}
-
-%Using the W3 and W4 images from the AllWISE data, it is difficult to see the X-shape structure due to variation in the background levels. 
+%
+The W3 and W4 bands largely trace dust rather than stellar light and therefore
+do not reveal the X-shaped profile.
 
 \begin{figure}[h!]
 \centering
         \includegraphics[width=\textwidth]{xbulge-00}
 \caption{WISE image for W1 and W2 in Galactic coordinates.  An arcsinh
   stretch is used to allow the full dynamic range to be shown.}
-% and put link to webpage where this is: \viewerurl}
 \label{fig:xbulge}
 \end{figure}
 
@@ -132,15 +111,14 @@ Figure \ref{fig:filt} presents a contrast enhanced and zoomed in version of Figu
 
 \section{The residuals of the unWISE image of the bulge}
 
-Finally, we fit and subtract a simple exponential disk model to make the bulge structure more clear.  We zoom in to the central region of the galaxy, compute the W1 - W2 color of each pixel, and mask the top and bottom 5\% in order to suppress the influence of the most dusty regions on the fit.  We then fit a simple exponential disk model, where the shape parameteres are shared between the W1 and W2 bands, and each pixel is given equal weight.
+Finally, we fit and subtract a simple exponential disk model to make the bulge structure more clear.  We zoom in to the central region of the galaxy, compute the $\textrm{W1} - \textrm{W2}$ color of each pixel, and mask the top and bottom 5\% in order to suppress the influence of the most dusty regions on the fit.  We then fit a simple exponential disk model, where the ellipse shape parameteres are shared between the W1 and W2 bands, and each pixel is given equal weight.
+The model fit parameters we get are a half-light radius on the major axis of about 1.9 kpc and an axis ratio of 0.38, yielding a vertical half-light radius of about 720 pc.
 Figure \ref{fig:modfit} shows these results.
-%The two left hand panels show the data and model, respectively (both masked). The residuals are shown in the top right hand panel of Figure \ref{fig:modfit} and the 40-pixel median of this residual is shown in the bottom left panel. The regions of excess dust above the masked panel in the plane show some of the (dark)  regions of dusty lanes at the galactic centre (e.g. across (--5$^\circ$ $<$ $l$ $<$ 8$^\circ$, $|b|$ $<$ 2$^\circ$). The white regions show the stellar excess above the exponential disk.
-%The bottom right panel of Figure \ref{fig:modfit} shows the outliers in the residual image at top right masked by a blue color mask, keeping the 5th to 95th percentile of the W1-W2 color.
 The projection effect is again clear in these residual maps, which reflects that the bulge is orientated at 27$^\circ$ with respect to the line of sight, with the nearest side at  positive longitudes. %
-%The arms of the X at left in the bottom panel of Figure \ref{fig:modfit} trace out an off-centre X-structure, as revealed in\citep{Portail2015b}. 
 
 \begin{figure}[h!]
 \centering
+% Figures from https://github.com/dstndstn/unwise-projects commit 1285e44
 \includegraphics[width=0.3\textwidth]{xbulge-fit-data}
 \includegraphics[width=0.3\textwidth]{xbulge-fit-masked}
 \includegraphics[width=0.3\textwidth]{xbulge-fit-model}
@@ -152,9 +130,11 @@ The projection effect is again clear in these residual maps, which reflects that
   The WISE W1 and W2 image fit by a simple exponential disk
   model, making the X structure more apparent.
   Top-left: Data.  Top-middle: Data, masking out the top and bottom 5\%
-  of pixels based on W1-W2 color.  Top-right: Exponential disk model fit.
+  of pixels based on $\textrm{W1} - \textrm{W2}$ color, as well as pixels with negative flux.  The diagonal structure
+  at the top of the image is due to scattered light from the Moon in the unWISE coadds.
+  Top-right: Exponential disk model fit.
   Bottom-left: Residuals (data minus model).  Bottom-middle: Masked residuals.
-  Bottom-right: 50-pixel median filter of masked residuals (median of unmasked
+  Bottom-right: 50-pixel ($\sim 1.7^{\circ}$) median filter of masked residuals (median of unmasked
   pixels).
   }
 \label{fig:modfit}
@@ -177,14 +157,4 @@ The Dunlap Institute is funded through an endowment established by the David Dun
 \bibliography{Xbulge_bib.bib}
 
 \end{document}
-
-\begin{figure}
-\centering
-\includegraphics[width=0.3\textwidth]{xbulge-05}
-\includegraphics[width=0.3\textwidth]{xbulge-07}
-\caption{
-}
-\label{fig:contours}
-\end{figure}
-
 
