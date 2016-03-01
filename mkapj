@@ -1,0 +1,115 @@
+#!/usr/bin/perl
+#
+# Make a sensible set-up into an ApJ type set-up
+#
+# MB 1/99
+# 2004-09-10  made more general - Hogg
+# 2008-08-28  made yet more general - Hogg
+#
+my $figformatsuffix= "eps";
+$papername=shift;
+
+if($papername eq "") {$papername="paper";}
+
+sub inputfile {
+    local ($infile) = @_;
+    my ($filehand);
+    $nfiles++;
+    $filehand="auxfile$nfiles";
+    print "$filehand\n";
+    open($filehand,"<$infile");
+    while(<$filehand>) {
+	if(/^\s*\\input\{(\S*)\}.*$/ || 
+	   /^\s*\\include\{(\S*)\}.*$/) {
+	    inputfile("$1");
+	} else {
+	    print apjfile;
+	}
+    }
+    close($filehand);
+    $nfiles--;
+}
+
+#
+# Make apj directory if necessary
+#
+system("mkdir -p ./apj");
+
+# start tex file
+my $apjms1= "apj/tmp_1_ms.tex";
+open(apjfile,">$apjms1");
+print apjfile "\\documentclass[12pt,preprint]\{aastex\}\n";
+
+# deal with include files, bibliography, etc
+open(paperfile,"<$papername.tex");
+while(<paperfile>) {
+    if (/^.*\\documentclass.*$/) {
+    } elsif (/^\s*\\input\{(\S*)\}\.*$/) {
+	inputfile("$1");
+    } elsif (/^\s*\\include\{(\S*)\}\.*$/) {
+	inputfile("$1");
+    } elsif (/\\bibliography/) {
+	$dummy=<paperfile>;
+	inputfile("$papername.bbl");
+    } elsif (/^\s*\\bibliographystyle/) {
+    } else {
+	print apjfile;
+    }
+}
+close(paperfile);
+close(apjfile);
+
+# deal with figures
+my $nfig= 0;
+my $nsubfig= 0;
+my $figappend= "";
+open(infile,"<$apjms1");
+my $apjms2= "apj/tmp_2_ms.tex";
+open(outfile,">$apjms2");
+while(<infile>) {
+    if(/^(.*\\begin\{figure\}.*)$/){
+	$nfig++;
+	$nsubfig= 0;
+    }
+    if(/^.*\\addtocounter\{figure\}\{(.*)\}.*$/){
+	$nfig+= $1;
+    }
+    if((/^(.*\\plot\w*\{)(\S*)(\}.*)$/ ||
+	/^(.*\\epsfig\{figure\=)(\S*?)(,.*\}.*)$/ ||
+	/^(.*\\includegraphics\w*\{)(\S*?)(\}+.*)$/ ||
+	/^(.*\\includegraphics\[.*\]\w*\{)(\S*?)(\}+.*)$/ ||
+	/^(\\.humbnail\{.*\}\{)(\S*?)(\}\{.*\}+.*)$/) &&
+       !/^%/ &&
+	   $nfig > 0
+       ) {
+	$figfile=$2;
+	$prepend=$1;
+	$postpend=$3;
+	$line=sprintf("%sf%d%c.%s%s\n",$prepend,$nfig,97+$nsubfig,
+				  $figformatsuffix,$postpend);
+	print outfile $line;
+	print $line;
+	if($figfile =~ /.+\.pdf/){
+		printf "%s is a PDF file",$figfile;
+		$cmd=sprintf("convert -density 300 %s apj/f%d%c.%s",$figfile,$nfig,97+$nsubfig,
+					 $figformatsuffix);
+	}elsif($figfile =~ /.+\.eps/){
+		$cmd=sprintf("cp %s apj/f%d%c.%s",$figfile,$nfig,97+$nsubfig,
+					 $figformatsuffix);
+	} else {
+		printf "%s is not a PDF file",$figfile;
+		$cmd=sprintf("anytopnm %s | convert - apj/f%d%c.%s",$figfile,$nfig,97+$nsubfig,
+					 $figformatsuffix);
+	}
+	system("$cmd");
+	printf readmefile " f%d%s.%s\n",$nfig,$figappend,$figformatsuffix;
+	$nsubfig++;
+    } else {
+	print outfile;
+    }
+}
+close(outfile);
+close(infile);
+
+system("/bin/rm -fv $apjms1");
+system("/bin/mv -fv $apjms2 apj/ms.tex");
