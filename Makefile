@@ -24,6 +24,6 @@ arxiv.tgz: $(ARXIV)
 	tar czf $@ $(ARXIV)
 
 aj:
-	mkapj Xbulge
+	./mkapj Xbulge
 
 

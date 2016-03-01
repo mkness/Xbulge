@@ -48,10 +48,10 @@ while(<paperfile>) {
 	inputfile("$1");
     } elsif (/^\s*\\include\{(\S*)\}\.*$/) {
 	inputfile("$1");
+    } elsif (/^\s*\\bibliographystyle/) {
     } elsif (/\\bibliography/) {
 	$dummy=<paperfile>;
 	inputfile("$papername.bbl");
-    } elsif (/^\s*\\bibliographystyle/) {
     } else {
 	print apjfile;
     }
@@ -89,18 +89,20 @@ while(<infile>) {
 				  $figformatsuffix,$postpend);
 	print outfile $line;
 	print $line;
-	if($figfile =~ /.+\.pdf/){
+#	if($figfile =~ /.+\.pdf/){
 		printf "%s is a PDF file",$figfile;
-		$cmd=sprintf("convert -density 300 %s apj/f%d%c.%s",$figfile,$nfig,97+$nsubfig,
+		$cmd=sprintf("convert -density 300 %s.pdf apj/f%d%c.%s",$figfile,$nfig,97+$nsubfig,
 					 $figformatsuffix);
-	}elsif($figfile =~ /.+\.eps/){
-		$cmd=sprintf("cp %s apj/f%d%c.%s",$figfile,$nfig,97+$nsubfig,
-					 $figformatsuffix);
-	} else {
-		printf "%s is not a PDF file",$figfile;
-		$cmd=sprintf("anytopnm %s | convert - apj/f%d%c.%s",$figfile,$nfig,97+$nsubfig,
-					 $figformatsuffix);
-	}
+# 		$cmd=sprintf("convert -density 300 %s apj/f%d%c.%s",$figfile,$nfig,97+$nsubfig,
+# 					 $figformatsuffix);
+# 	}elsif($figfile =~ /.+\.eps/){
+# 		$cmd=sprintf("cp %s apj/f%d%c.%s",$figfile,$nfig,97+$nsubfig,
+# 					 $figformatsuffix);
+# 	} else {
+# 		printf "%s is not a PDF file",$figfile;
+# 		$cmd=sprintf("anytopnm %s | convert - apj/f%d%c.%s",$figfile,$nfig,97+$nsubfig,
+# 					 $figformatsuffix);
+# 	}
 	system("$cmd");
 	printf readmefile " f%d%s.%s\n",$nfig,$figappend,$figformatsuffix;
 	$nsubfig++;
