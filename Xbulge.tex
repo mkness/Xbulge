@@ -6,6 +6,7 @@
 \bibliographystyle{apj}
 
 \usepackage{hyperref}
+\usepackage{color}
 \newcommand{\niceurl}[1]{\href{#1}{\textsl{#1}}}
 \newcommand{\viewerurl}{\niceurl{http://legacysurvey.org/viewer}}
 
@@ -55,7 +56,7 @@ the VVV survey, \citet{Wegg2013} measured the three dimensional
 density of red clump stars in the bulge, earlier revealed to show two
 peaks along the line of sight \citep{McWilliam2010, Nataf2010}, and
 determined their distribution to be characteristic of a strong
-boxy/peanut bulge within a barred galaxy. This observed split in the
+boxy/peanut bulge within a barred Galaxy. This observed split in the
 red clump is reported to be a property of the more metal rich stars in
 the bulge, with [Fe/H] $>$ --0.5 \citep{Ness2012, Uttenthaler2012};
 although according to \citet{Nataf2014} this metallicity dependence
@@ -82,7 +83,7 @@ families \citep[e.g.][]{Portail2015b}.
 
 The Wide-Field Infrared Survey Explorer \citep[WISE;][]{W2010} is a full sky photometric survey using four bands in the mid-infrared at 3.4 $\micron$, 4.6 $\micron$, 12 $\micron$ and 22 $\micron$ (W1--W4). The original WISE data release was based on a co-adding approach that is optimal for detecting isolated point sources but which effectively blurs the images. \citet{Lang2014a} implemented an alternative co-adding methodology that does not degrade the resolution of the imaging.  These ``unWISE'' coadds have been publicly released.\footnote{Available at \niceurl{http://unwise.me}. Browseable at \viewerurl.}
 
-Figure \ref{fig:xbulge} presents the bulge region of the Milky Way,  resampled to galactic coordinates from the unWISE images, across $(|\ell|,|b|)$ $<$ (60, 30) in WISE bands W1 and W2.  This presents the overall Milky Way structures in exquisite detail.
+Figure \ref{fig:xbulge} presents the bulge region of the Milky Way,  resampled to Galactic coordinates from the unWISE images, across $(|\ell|,|b|)$ $<$ (60, 30) in WISE bands W1 and W2.  This presents the overall Milky Way structures in exquisite detail.
 No additional unsharp masking or equivalent techniques have been used to enhance these data. The bulge in the central region of this Figure shows a clear X-shaped morphology. Note that the arms of the X-shape are asymmetrical around the minor axis and appear larger at left than at right. This is a real projection effect and reflects that the bulge is oriented at about 27$^\circ$ degrees with respect to the line of sight \citep{Wegg2013}, with the nearest side at positive longitudes. The X-shape is also visible, though with more artifacts, in the official AllWISE data release imaging.\footnote{Explanatory
   Supplement to the AllWISE Data Release Products, 
   \niceurl{http://wise2.ipac.caltech.edu/docs/release/allwise/expsup/}}
@@ -100,7 +101,7 @@ do not reveal the X-shaped profile.
 
 \section{The contrast enhanced unWISE image of the bulge}
 
-Figure \ref{fig:filt} presents a contrast enhanced and zoomed in version of Figure \ref{fig:xbulge}. This better reveals the X-shape light profile of the bulge and its extent across $(\ell,b)$ in the WISE image. This Figure was produced with a median subtraction across each row to suppress the contribution from the disk. The arms in the image extend to longitudes of $|\ell|$ $\approx$ 10$^\circ$ and latitudes of $|b|$ $\lesssim$ 10$^\circ$; (although note again the arms on the near side are larger than those of the far side due to projection). This extent on the sky corresponds to a length of about 2.4 kpc for each arm, for a distance of the bulge of 8.3 kpc from the Sun and a bar angle of 27$^\circ$.
+Figure \ref{fig:filt} presents a contrast enhanced and zoomed in version of Figure \ref{fig:xbulge}. This better reveals the X-shape light profile of the bulge and its extent across $(\ell,b)$ in the WISE image. This Figure was produced with a median subtraction across each row to suppress the contribution from the disk. The arms in the image extend to longitudes of $|\ell|$ $\approx$ 10$^\circ$ and latitudes of $|b|$ $\lesssim$ 10$^\circ$; (although note again the arms on the near side are larger than those of the far side due to projection). This extent on the sky corresponds to a length of about 2.4 kpc for each arm, \textcolor{blue}{for a distance to the bulge centre} of 8.3 kpc from the Sun and a bar angle of 27$^\circ$.
 
 \begin{figure}[h!]
 \centering
@@ -111,10 +112,10 @@ Figure \ref{fig:filt} presents a contrast enhanced and zoomed in version of Figu
 
 \section{The residuals of the unWISE image of the bulge}
 
-Finally, we fit and subtract a simple exponential disk model to make the bulge structure more clear.  We zoom in to the central region of the galaxy, compute the $\textrm{W1} - \textrm{W2}$ color of each pixel, and mask the top and bottom 5\% in order to suppress the influence of the most dusty regions on the fit.  We then fit a simple exponential disk model, where the ellipse shape parameters are shared between the W1 and W2 bands, and each pixel is given equal weight.
+Finally, we fit and subtract a simple exponential disk model to make the bulge structure more clear.  We zoom in to the central region of the Galaxy, compute the $\textrm{W1} - \textrm{W2}$ color of each pixel, and mask the top and bottom 5\% in order to suppress the influence of the most dusty regions on the fit.  We then fit a simple exponential disk model, where the ellipse shape parameters are shared between the W1 and W2 bands, and each pixel is given equal weight.
 The model fit parameters we get are a half-light radius on the major axis of about 1.9 kpc and an axis ratio of 0.38, yielding a vertical half-light radius of about 720 pc.
 Figure \ref{fig:modfit} shows these results.
-The projection effect is again clear in these residual maps, which reflects that the bulge is oriented at 27$^\circ$ with respect to the line of sight, with the nearest side at  positive longitudes. %
+The projection effect is again clear in these residual maps, which reflects that the bulge is oriented with respect to the line of sight, with the nearest side at  positive longitudes. %
 
 \begin{figure}[h!]
 \centering
@@ -128,7 +129,7 @@ The projection effect is again clear in these residual maps, which reflects that
 \includegraphics[width=0.3\textwidth]{xbulge-fit-smooth2}
 \caption{%
   The WISE W1 and W2 image fit by a simple exponential disk
-  model, making the X structure more apparent.
+  model, making the \textcolor{blue}{X-shaped} structure more apparent.
   Top-left: Data.  Top-middle: Data, masking out the top and bottom 5\%
   of pixels based on $\textrm{W1} - \textrm{W2}$ color, as well as pixels with negative flux.  The diagonal structure
   at the top of the image is due to scattered light from the Moon in the unWISE coadds.
@@ -145,7 +146,7 @@ The projection effect is again clear in these residual maps, which reflects that
 
 \section{Conclusion}
 
-Using the publicly available ``unWISE'' coadds, we have presented new images of the bulge of the Milky Way in the W1 and W2 bands.  These directly reveal its X-shaped nature in the integrated light, even without any special image processing or enhancement. Our contrast enhancement and residual maps further highlight the extent of the X-shape that underlies the boxy structure. Critical to understanding the bulge is a further and detailed characterisation of the stars that are in the arms of the X-shape, the spatial extent of which is clearly demonstrated in our Figures. The spatial mapping we have presented in galactic coordinates will therefore provide a useful guide for current and future spectroscopic surveys such as APOGEE \citep{Majewski2015}, 4-MOST \citep{4most} and bulge programs associated with the GALAH survey \citep{deSilva2015}. These data can be used to guide stellar target selection, where examining the spectroscopic ages \citep[e.g.][]{Martig2016, Ness2016} and metallicities of stars in the arms of the X-shape as a function of $(\ell,b)$ will be necessary to understand the formation of the bulge and constrain the formation processes relevant in the Milky Way. 
+Using the publicly available ``unWISE'' coadds, we have presented new images of the bulge of the Milky Way in the W1 and W2 bands.  These directly reveal its X-shaped nature in the integrated light, even without any special image processing or enhancement. Our contrast enhancement and residual maps further highlight the extent of the X-shape that underlies the boxy structure. Critical to understanding the bulge is a further and detailed characterisation of the stars that are in the arms of the X-shape, the spatial extent of which is clearly demonstrated in our Figures. The \textcolor{blue}{image} we have presented in Galactic coordinates will therefore provide a useful guide for current and future spectroscopic surveys such as APOGEE \citep{Majewski2015}, 4-MOST \citep{4most} and bulge programs associated with the GALAH survey \citep{deSilva2015}. These data can be used to guide stellar target selection, where examining the spectroscopic ages \citep[e.g.][]{Martig2016, Ness2016} and metallicities of stars in the arms of the X-shape as a function of $(\ell,b)$ will be necessary to understand the formation of the bulge and constrain the formation processes relevant in the Milky Way. 
 
 
 \section{Acknowledgements} 
