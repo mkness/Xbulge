@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os
+import tempfile
 
 import matplotlib
 matplotlib.use('Agg')
@@ -10,6 +11,7 @@ matplotlib.rc('font', serif='computer modern roman')
 matplotlib.rc('font', **{'sans-serif': 'computer modern sans serif'})
 
 import pylab as plt
+import numpy as np
 import fitsio
 from astrometry.util.util import (anwcs_create_hammer_aitoff, Tan,
                                   median_smooth)
@@ -19,20 +21,29 @@ from astrometry.util.fits import fits_table
 def main():
     '''
     This function generates the plots in the paper.
+
+    Some files and directories are assumed to exist in the current directory:
+
+    * WISE atlas tiles, from http://unwise.me/data/allsky-atlas.fits
+    * unwise-neo1-coadds, from http://unwise.me/data/neo1/
+    * unwise-neo1-coadds-half, unwise-neo1-coadds-quarter: directories
+
     '''
     # First, create the WCS into which we want to render
     # degrees width to render in galactic coords
     # |l| < 60
     # |b| < 30
-    width = 60
+    width = 120
     # ~2 arcmin per pixel
     W = int(width * 60.) / 2
     H = W/2
     zoom = 360. / width
-    wcs = anwcs_create_hammer_aitoff(0., 0., zoom, W, H, FALSE)
+    wcs = anwcs_create_hammer_aitoff(0., 0., zoom, W, H, 0)
 
     # Select WISE tiles that overlap.  This atlas table is available
     # from http://unwise.me/data/allsky-atlas.fits
+
+    # Select WISE tiles that overlap.
     T = fits_table('allsky-atlas.fits')
     print(len(T), 'tiles total')
     T.ll,T.bb = radectolb(T.ra, T.dec)
@@ -43,7 +54,7 @@ def main():
     print(len(I), 'tiles in L,B range')
 
     # Create a coadd for each WISE band
-    lbpat = 'unwise-w%i-lb.fits'
+    lbpat = 'unwise-neo1-w%i-lb.fits'
     imgs = []
     for band in [1,2]:
         outfn = lbpat % (band)
@@ -53,18 +64,18 @@ def main():
             imgs.append(img)
             continue
 
-        img  = np.zeros((H,W), np.float32)
-        nimg = np.zeros((H,W), np.float32)
+        coimg  = np.zeros((H,W), np.float32)
+        conimg = np.zeros((H,W), np.float32)
 
         for i,brick in enumerate(T.coadd_id):
             # We downsample by 2, twice, just to make repeat runs a
             # little faster.
             # unWISE
-            fn = os.path.join('unwise-coadds', brick[:3], brick,
+            fn = os.path.join('unwise-neo1-coadds', brick[:3], brick,
                               'unwise-%s-w%i-img-u.fits' % (brick, band))
-            qfn = os.path.join('unwise-coadds-quarter',
+            qfn = os.path.join('unwise-neo1-coadds-quarter',
                                'unwise-%s-w%i.fits' % (brick, band))
-            hfn = os.path.join('unwise-coadds-half',
+            hfn = os.path.join('unwise-neo1-coadds-half',
                                'unwise-%s-w%i.fits' % (brick, band))
 
             if not os.path.exists(qfn):
@@ -90,21 +101,17 @@ def main():
             oy = np.round(oy - 1).astype(int)
             K = (ox >= 0) * (ox < W) * (oy >= 0) * (oy < H) * ok
 
-            n1 = np.sum(K)
-            K *= np.isfinite(img)
-            n2 = np.sum(K)
-            print('Non-finite input pixels:', n1-n2)
-            assert(n1 == n2)
-            
+            #print('ok:', np.unique(ok), 'x', ox.min(), ox.max(), 'y', oy.min(), oy.max())
+            assert(np.all(np.isfinite(img)))
             if np.sum(K) == 0:
                 # no overlap
                 print('No overlap')
                 continue
     
-            np.add.at( img, (oy[K], ox[K]), img[K])
-            np.add.at(nimg, (oy[K], ox[K]), 1)
+            np.add.at( coimg, (oy[K], ox[K]), img[K])
+            np.add.at(conimg, (oy[K], ox[K]), 1)
 
-        img /= np.maximum(nimg, 1)
+        img = coimg / np.maximum(conimg, 1)
 
         # Hack -- write and then read FITS WCS header.
         fn = 'wiselb.wcs'
@@ -114,7 +121,7 @@ def main():
         hdr['CTYPE2'] = 'GLAT-AIT'
 
         fitsio.write(outfn, img, header=hdr, clobber=True)
-        fitsio.write(outfn.replace('.fits', '-n.fits'), nimg,
+        fitsio.write(outfn.replace('.fits', '-n.fits'), conimg,
                      header=hdr, clobber=True)
         imgs.append(img)
 
@@ -193,9 +200,6 @@ def main():
     print('W1 - W2 color masks:', mlo,mhi)
     mask = goodcolor * (cc > mlo) * (cc < mhi)
 
-    from tractor import *
-    from tractor.galaxy import *
-
     plt.clf()
     rgb = wise_rgb(w1, w2)
     plt.imshow(rgb, origin='lower', interpolation='nearest')
@@ -211,6 +215,10 @@ def main():
     plt.savefig('xbulge-fit-masked' + suffix)
     
     ie = mask.astype(np.float32)
+
+    from tractor import (Image, NCircularGaussianPSF, LinearPhotoCal, Tractor,
+                         PixPos, Fluxes)
+    from tractor.galaxy import ExpGalaxy, GalaxyShape
 
     # Create Tractor images
     tim1 = Image(data=w1 * mask, inverr=ie,
