@@ -17,6 +17,10 @@ from astrometry.util.starutil_numpy import radectolb
 from astrometry.util.fits import fits_table
 
 def main():
+    '''
+    This function generates the plots in the paper.
+    '''
+    # First, create the WCS into which we want to render
     # degrees width to render in galactic coords
     # |l| < 60
     # |b| < 30
@@ -26,25 +30,20 @@ def main():
     H = W/2
     zoom = 360. / width
     wcs = anwcs_create_hammer_aitoff(0., 0., zoom, W, H, FALSE)
-    
-    #tilefn = 'wisex-atlas.fits'
-    #if not os.path.exists(tilefn):
+
+    # Select WISE tiles that overlap.  This atlas table is available
+    # from http://unwise.me/data/allsky-atlas.fits
     T = fits_table('allsky-atlas.fits')
     print(len(T), 'tiles total')
     T.ll,T.bb = radectolb(T.ra, T.dec)
-    #print('min,max ll,bb', T.ll.min(), T.ll.max(), T.bb.min(), T.bb.max())
     I = np.flatnonzero(np.logical_or(T.ll < width+1,
                                      T.ll > (360-width-1)) *
                                      (T.bb > -width/2-1) * (T.bb < width/2+1))
     T.cut(I)
     print(len(I), 'tiles in L,B range')
-    # print('min,max ll,bb', T.ll.min(), T.ll.max(), T.bb.min(), T.bb.max())
-    # plt.clf()
-    # plt.plot(T.ll, T.bb, 'b.')
-    # plt.savefig('lb.png')        
 
+    # Create a coadd for each WISE band
     lbpat = 'unwise-w%i-lb.fits'
-    
     imgs = []
     for band in [1,2]:
         outfn = lbpat % (band)
@@ -115,14 +114,11 @@ def main():
         hdr['CTYPE2'] = 'GLAT-AIT'
 
         fitsio.write(outfn, img, header=hdr, clobber=True)
-        fitsio.write(outfn.replace('.fits', '-n.fits'), nimg, header=hdr, clobber=True)
+        fitsio.write(outfn.replace('.fits', '-n.fits'), nimg,
+                     header=hdr, clobber=True)
         imgs.append(img)
 
     w1,w2 = imgs
-
-    # FIXME -- move to rgb functions
-    w1 /= 10.
-    w2 /= 10.
 
     # Get/confirm L,B bounds...
     H,W = w1.shape
@@ -154,6 +150,8 @@ def main():
     lbticks(wcs, xlo, ylo, lticks=[60,30,0,330,300], bticks=[-30,-15,0,15,30])
     plt.savefig('xbulge-00' + suffix)
 
+    # Compute the median of each row as a crude way of suppressing the
+    # Galactic plane
     medy1 = np.median(w1, axis=1)
     medy2 = np.median(w2, axis=1)
 
@@ -167,8 +165,7 @@ def main():
     lbticks(wcs, xlo, ylo, lticks=[40,20,0,340,320], bticks=[-20,-10,0,10,20])
     plt.savefig('xbulge-01' + suffix)
 
-
-    # Zoom in on core
+    # Zoom in on the core
     lhi,llo,blo,bhi = 15, 345, -15, 15
 
     ok,x1,y1 = wcs.radec2pixelxy(llo, blo)
@@ -184,8 +181,6 @@ def main():
 
     w1 = w1[ylo:yhi, xlo:xhi]
     w2 = w2[ylo:yhi, xlo:xhi]
-
-    #mn1,mx1 = np.percentile(w1, [25,98])
 
     plt.figure(2)
 
@@ -287,11 +282,15 @@ def main():
     plt.title('Residuals (smoothed)')
     plt.savefig('xbulge-fit-smooth2' + suffix)
     
+
 def wise_rgb(w1, w2):
+    ''' Converts WISE W1 and W2 images into an RGB image,
+    with arcsinh stretch.
+    '''
     import numpy as np
     H,W = w1.shape
 
-    S,Q = 3000,25
+    S,Q = 30000,25
     alpha = 1.5
 
     b = w1 / S
@@ -314,13 +313,15 @@ def wise_rgb(w1, w2):
     return RGB
 
 def resid_rgb(resid1, resid2):
-    S,Q = 3000,25
+    ''' Converts WISE W1 and W2 residual images into an RGB image,
+    with arcsinh stretch.
+    '''
+    S,Q = 30000,25
     alpha = 5.
     
     w1,w2 = resid1,resid2
-    S1,S2 = S,S
-    b = w1 / S1
-    r = w2 / S2
+    b = w1 / S
+    r = w2 / S
     g = (r + b) / 2.
 
     I = (r+g+b)/3.
@@ -335,6 +336,8 @@ def resid_rgb(resid1, resid2):
     return RGB
     
 def lbticks(wcs, xlo, ylo, lticks=None, bticks=None):
+    ''' Add Galactic lat,long tick marks to a plot.
+    '''
     ax = plt.axis()
     if lticks is None:
         lticks = [345, 350, 355, 0, 5, 10, 15]
@@ -349,6 +352,9 @@ def lbticks(wcs, xlo, ylo, lticks=None, bticks=None):
     plt.axis(ax)
 
 def halfsize(sourcefn, halffn):
+    ''' Reads and image and WCS from the given source file,
+    Bins down by a factor of 2, and writes to the given output file.
+    '''
     im,hdr = fitsio.read(sourcefn, header=True)
     H,W = im.shape
     # make even size; smooth down
