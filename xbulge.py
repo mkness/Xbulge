@@ -152,8 +152,8 @@ def main():
     
     plt.figure(1)
     plt.clf()
-    plt.imshow(rgb, origin='lower', interpolation='nearest',
-               extent=[lhi,llo,blo,bhi], aspect=1.)
+    plt.imshow(rgb, origin='lower', interpolation='nearest')
+    #extent=[lhi,llo,blo,bhi], aspect=1.)
     lbticks(wcs, xlo, ylo, lticks=[60,30,0,330,300], bticks=[-30,-15,0,15,30])
     plt.savefig('xbulge-00' + suffix)
 
