@@ -153,7 +153,6 @@ def main():
     plt.figure(1)
     plt.clf()
     plt.imshow(rgb, origin='lower', interpolation='nearest')
-    #extent=[lhi,llo,blo,bhi], aspect=1.)
     lbticks(wcs, xlo, ylo, lticks=[60,30,0,330,300], bticks=[-30,-15,0,15,30])
     plt.savefig('xbulge-00' + suffix)
 
@@ -165,16 +164,23 @@ def main():
     rgb = wise_rgb(w1 - medy1[:,np.newaxis],
                    w2 - medy2[:,np.newaxis])
 
+    # Zoom in a bit for Galactic plane subtracted version
+    lhi,llo,blo,bhi = 40, 320, -20, 20
+    okxy = np.array([wcs.radec2pixelxy(l,b) for l,b in [
+            (llo, blo), (llo, bhi), (lhi, blo), (lhi, bhi)]])
+    xlo = int(np.floor(min(okxy[:,-2])))
+    xhi = int(np.ceil (max(okxy[:,-2])))
+    ylo = int(np.floor(min(okxy[:,-1])))
+    yhi = int(np.ceil (max(okxy[:,-1])))
+    
     plt.clf()
-    plt.imshow(rgb, origin='lower', interpolation='nearest',
-               extent=[lhi,llo,blo,bhi], aspect=1.)
-    plt.axis([400, 320, -20, 20])
-    lbticks(wcs, xlo, ylo, lticks=[40,20,0,340,320], bticks=[-20,-10,0,10,20])
+    plt.imshow(rgb[ylo:yhi, xlo:xhi, :],origin='lower', interpolation='nearest')
+    #lbticks(wcs, xlo, ylo, lticks=[40,20,0,340,320], bticks=[-20,-10,0,10,20])
+    lbticks(wcs, xlo, ylo, lticks=[30,15,0,345,330], bticks=[-20,-10,0,10,20])
     plt.savefig('xbulge-01' + suffix)
 
     # Zoom in on the core
     lhi,llo,blo,bhi = 15, 345, -15, 15
-
     ok,x1,y1 = wcs.radec2pixelxy(llo, blo)
     ok,x2,y2 = wcs.radec2pixelxy(llo, bhi)
     ok,x3,y3 = wcs.radec2pixelxy(lhi, blo)
